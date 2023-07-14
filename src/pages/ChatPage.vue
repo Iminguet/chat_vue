@@ -57,17 +57,19 @@ export default {
     // === METHODS ===
 
     const sendMessage = () => {
-      const now = new Date();
-      const hora = now.getHours();
-      const minutos = now.getMinutes();
-      const horaActual = `${hora}:${minutos < 10 ? "0" + minutos : minutos}`;
-
       conversation.value.push({
         autor: personChating.value,
         contenido: mensage.value,
-        hora: horaActual,
+        hora: getCurrentDate(),
       });
       mensage.value = "";
+    };
+
+    const getCurrentDate = () => {
+      const now = new Date();
+      const hora = now.getHours();
+      const minutos = now.getMinutes();
+      return `${hora}:${minutos < 10 ? "0" + minutos : minutos}`;
     };
     // ==== MQTT ====
     // ==== COMPUTED ====
@@ -76,8 +78,8 @@ export default {
       if (conversation.value.length <= 0) {
         conversation.value.push({
           autor: "Fernando",
-          contenido: "Hola, buenos días",
-          hora: "12:25",
+          contenido: "Buenas Isra",
+          hora: getCurrentDate(),
         });
       }
     });
@@ -88,6 +90,7 @@ export default {
       mensage,
       //methods
       sendMessage,
+      getCurrentDate,
     };
   },
 };
