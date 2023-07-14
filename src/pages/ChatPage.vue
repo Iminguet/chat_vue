@@ -20,6 +20,7 @@
             bg-color="white"
             class="input-field"
             v-model="mensage"
+            autogrow
           />
 
           <div class="send-wrapper">
@@ -59,11 +60,13 @@ export default {
     // === METHODS ===
 
     const sendMessage = () => {
-      store.addMessage({
-        autor: personChating.value,
-        contenido: mensage.value,
-        hora: getCurrentDate(),
-      });
+      if (mensage.value) {
+        store.addMessage({
+          autor: personChating.value,
+          contenido: mensage.value,
+          hora: getCurrentDate(),
+        });
+      }
 
       mensage.value = "";
     };
@@ -113,6 +116,7 @@ export default {
     height: 70vh;
     width: 50vh;
     padding: 20px;
+    margin-bottom: 7em;
     display: grid;
     grid-template-columns: 1fr;
     overflow: auto;
@@ -130,18 +134,38 @@ export default {
     grid-template-columns: 1fr min-content;
     column-gap: 5px;
     padding: 5px;
-
+    background-color: $chatBackground;
+    width: 50vh;
+    position: absolute;
+    align-self: end;
     .input-field {
       align-self: end;
-      height: 85%;
+      height: auto;
+      max-height: auto;
+      overflow-y: auto;
     }
     .send-wrapper {
       height: auto;
       display: grid;
-      .send-button {
-        align-self: end;
-      }
+      align-self: end;
     }
+  }
+}
+
+@media (max-width: 700px) {
+  .chat-wrapper {
+    margin-top: 0em;
+  }
+}
+
+@media (max-width: 1200px) {
+  .chat-wrapper {
+    margin-top: 3em;
+  }
+}
+@media (max-width: 998px) {
+  .chat-wrapper {
+    margin-top: 1em;
   }
 }
 </style>
