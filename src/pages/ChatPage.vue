@@ -59,11 +59,13 @@ export default {
     // === METHODS ===
 
     const sendMessage = () => {
-      store.addMessage({
-        autor: personChating.value,
-        contenido: mensage.value,
-        hora: getCurrentDate(),
-      });
+      if (mensage.value) {
+        store.addMessage({
+          autor: personChating.value,
+          contenido: mensage.value,
+          hora: getCurrentDate(),
+        });
+      }
 
       mensage.value = "";
     };
