@@ -7,10 +7,11 @@
         <div class="chat-main">
           <span class="margin-top-row">
             <ChatRow
-              v-for="speak in conversation"
+              v-for="speak in store.conversation"
               :key="speak"
               :mensaje="speak"
-          /></span>
+            />
+          </span>
         </div>
         <div class="text-input">
           <q-input
@@ -42,7 +43,7 @@ import NavBar from "src/components/NavBar.vue";
 
 import { onMounted, ref } from "vue";
 import ChatRow from "src/components/ChatRow.vue";
-
+import { useChatStore } from "src/stores/chatStore";
 export default {
   components: {
     NavBar,
@@ -51,43 +52,49 @@ export default {
 
   setup() {
     // ==== DATA ====
+    const store = useChatStore();
     let personChating = ref("Isra");
-    const conversation = ref([]);
+    // const conversation = ref([]);
     const mensage = ref(undefined);
     // === METHODS ===
 
     const sendMessage = () => {
+      store.addMessage({
+        autor: personChating.value,
+        contenido: mensage.value,
+        hora: getCurrentDate(),
+      });
+
+      mensage.value = "";
+    };
+
+    const getCurrentDate = () => {
       const now = new Date();
       const hora = now.getHours();
       const minutos = now.getMinutes();
-      const horaActual = `${hora}:${minutos < 10 ? "0" + minutos : minutos}`;
-
-      conversation.value.push({
-        autor: personChating.value,
-        contenido: mensage.value,
-        hora: horaActual,
-      });
-      mensage.value = "";
+      return `${hora}:${minutos < 10 ? "0" + minutos : minutos}`;
     };
     // ==== MQTT ====
     // ==== COMPUTED ====
     // ==== OTHER HOOKS ====
     onMounted(() => {
-      if (conversation.value.length <= 0) {
-        conversation.value.push({
+      if (store.conversation.length <= 0) {
+        store.addMessage({
           autor: "Fernando",
-          contenido: "Hola, buenos días",
-          hora: "12:25",
+          contenido: "Buenas Isra",
+          hora: getCurrentDate(),
         });
       }
     });
 
     return {
-      conversation,
+      // conversation,
+      store,
       personChating,
       mensage,
       //methods
       sendMessage,
+      getCurrentDate,
     };
   },
 };
