@@ -138,7 +138,6 @@ export default {
     width: 50vh;
     position: absolute;
     align-self: end;
-    border: 1px solid red;
     .input-field {
       align-self: end;
       height: auto;
